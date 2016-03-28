@@ -62,6 +62,22 @@ class Card
     private $rank;
 
     /**
+     * @param string $suit
+     * @param string $rank
+     *
+     * @return Card static
+     */
+    public static function fromSuitAndRank($suit, $rank)
+    {
+        $card = new self();
+        $card
+            ->setSuit($suit)
+            ->setRank($rank);
+
+        return $card;
+    }
+
+    /**
      * @return array
      */
     public static function getAllowedSuites()
@@ -131,8 +147,7 @@ class Card
 
     /**
      * @param string $suit
-     *
-     * @return $this
+     * @return Card
      */
     public function setSuit($suit)
     {

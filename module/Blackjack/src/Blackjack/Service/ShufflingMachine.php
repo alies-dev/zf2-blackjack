@@ -10,8 +10,9 @@ use Blackjack\Entity\Card;
 class ShufflingMachine
 {
     /**
-     * @return Card
      * Uses infinity deck/set
+     *
+     * @return Card
      */
     public function getRandomCard()
     {
@@ -20,11 +21,6 @@ class ShufflingMachine
         $ranks = Card::getAllowedValues();
         $rankIndex = array_rand($ranks);
 
-        $card = new Card();
-        $card
-            ->setSuit($suites[$suitIndex])
-            ->setRank($ranks[$rankIndex]);
-
-        return $card;
+        return Card::fromSuitAndRank($suites[$suitIndex], $ranks[$rankIndex]);
     }
 }
