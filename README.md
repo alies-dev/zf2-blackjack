@@ -21,6 +21,6 @@ DB:
 
 `php public/index.php orm:schema-tool:update --force`
 
-Run PHP wev-server (optionally, >=PHP 5.4):
+Run PHP web-server (optionally, >=PHP 5.4):
 
 `php -S 0.0.0.0:8080 -t public/ public/index.php`
