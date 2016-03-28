@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Blackjack </title>
+    <link href="css/layout.css" rel="stylesheet" type="text/css"/>
+    <link href="css/game.css" rel="stylesheet" type="text/css"/>
+    <link href="vendor/angular-loading-bar/build/loading-bar.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body ng-app="app" ng-controller="GameController as vm" ng-cloak="true">
+
+<form name="form" ng-submit="vm.doStick(vm.game)">
+    <div class="page">
+        <div class="header">
+            <div id="stats">
+                <p>
+                    <label>
+                        Wins</label><span>{{ vm.scores.totalWins }} ({{ vm.scores.percentWins|number:0 }}%)</span></p>
+                <p>
+                    <label>
+                        Draws</label><span>{{ vm.scores.totalDraws }} ({{ vm.scores.percentDraws|number:0 }}%)</span></p>
+                <p>
+                    <label>
+                        Looses</label><span>{{ vm.scores.totalLooses }} ({{ vm.scores.percentLooses|number:0 }}%)</span>
+                </p>
+                <a ng-click="vm.doShowScores()">Show your scores...</a></div>
+        </div>
+        <div class="gametable" id="gametable">
+            <div id="dealerContainer" class="boardRow">
+                <div id="score-1" class="score">{{ vm.game.dealerHand.score|score }}</div>
+
+                <div ng-repeat="card in vm.game.dealerHand.cards track by card.id"
+                     ng-style="{left: (35+81.5*($index))+'px', backgroundPosition: vm.getBackgroundPosition(card)}"
+                     style="top: 34px;"
+                     class="card"
+                     ng-class="{ blank: !card.rank }">
+                </div>
+            </div>
+            <div id="playerContainer" class="boardRow">
+
+                <div id="score-2" class="score">{{ vm.game.userHand.score|score }}</div>
+                <div ng-repeat="card in vm.game.userHand.cards track by card.id"
+                     ng-style="{left: (35+81.5*($index))+'px', backgroundPosition: vm.getBackgroundPosition(card)}"
+                     style="top: 34px;"
+                     class="card">
+                </div>
+            </div>
+            <div title="Deal a new card" class="twistbutton button">
+                <input type="button" value="twist..."
+                       ng-click="vm.doTwist(vm.game)"
+                       ng-disabled="!vm.game || vm.game.finished || (vm.game.userHand.score) > 21"/></div>
+            <div title="Stay with your current cards"
+                 class="stickbutton button">
+                <input type="button" value="stick!"
+                       ng-click="vm.doStick(vm.game)"
+                       ng-disabled="!vm.game || vm.game.finished"/></div>
+        </div>
+        <p class="copy">
+            © 2010 dotDigitalGroup.</p>
+    </div>
+</form>
+
+<div ng-show="vm.message">
+    <div class="messageBanner">
+        <div class="message">{{ vm.message }}
+            <small>Click 'Play' to start...</small>
+        </div>
+        <div class="playButton" ng-click="vm.doStart()">
+            <input type="image" value="twist..." src="images/play.png"
+                   class="playButton"/>
+        </div>
+        <div class="bannerLinks">
+            <a ng-click="vm.doShowScores()">Show your scores...</a>
+            <a ng-click="vm.doReset(vm.game)" ng-show="vm.game">Reset this game!</a>
+        </div>
+    </div>
+    <div style="position: absolute; left: 0pt; top: 323px; background-color: Black;
+        z-index: 10; width: 100%; height: 100px; display: block;">
+    </div>
+</div>
+
+<div ng-show="vm.scores.show">
+    <div class="scoreHistory">
+        <a ng-click="vm.scores.show = false">[x] Close</a>
+        <table>
+            <tbody>
+            <tr class="header">
+                <td>Game</td>
+                <td>Player</td>
+                <td>Dealer</td>
+                <td>Result</td>
+            </tr>
+            <tr ng-repeat="(id, game) in vm.scores.games track by id">
+                <td>{{ $index + 1 }}</td>
+                <td>{{ game.userScore }}</td>
+                <td>{{ game.dealerScore }}</td>
+                <td>{{ vm.getGameTextResult(game) }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="position: absolute; left: 0pt; top: 323px; background-color: Black; z-index: 10;
+        width: 100%; height: 100px; display: block;">
+    </div>
+</div>
+
+<script src="vendor/angular/angular.min.js"></script>
+<script src="vendor/angular-loading-bar/build/loading-bar.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/filter/score.filter.js"></script>
+<script src="js/core/constants.js"></script>
+<script src="js/service/game.service.js"></script>
+<script src="js/service/user.service.js"></script>
+<script src="js/game/game.controller.js"></script>
+
+</body>
+</html>
